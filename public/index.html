@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imágenes de Docker</title>
+    <script>
+        async function cargarImagenes() {
+            const respuesta = await fetch("/images");
+            const data = await respuesta.json();
+            const tabla = document.getElementById("tabla-imagenes");
+
+            data.forEach(img => {
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>${img.RepoTags ? img.RepoTags.join(", ") : "Sin etiqueta"}</td>
+                    <td>${(img.Size / 1024 / 1024).toFixed(2)} MB</td>
+                `;
+                tabla.appendChild(fila);
+            });
+        }
+        window.onload = cargarImagenes;
+    </script>
+</head>
+<body>
+    <h1>Imágenes de Docker</h1>
+    <table border="1">
+        <tr>
+            <th>Nombre</th>
+            <th>Tamaño</th>
+        </tr>
+        <tbody id="tabla-imagenes"></tbody>
+    </table>
+</body>
+</html>
